@@ -28,7 +28,7 @@ if [ -f "$PID_FILE" ]; then
     echo "$PID_FILE exists"
     # check if really running    
     PID_IN_FILE=$(<$PID_FILE)
-    kill -0 $PID_IN_FILE
+    ps -p $PID_IN_FILE > /dev/null
     if [ $? -eq 0 ]; then
         echo "$PID_IN_FILE is running."
         IS_RUNNING=1
