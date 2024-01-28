@@ -227,8 +227,8 @@ plex_partial_scan (){
     scan_folder=$1
     scan_id=$2
     
-    message "Start partial scan: $scan_folder with id: $scan_id" "LOG"
-
+    message "Start partial scan: $scan_folder with id: $scan_id" "LOG";
+    scan_folder="$(echo $scan_folder | sed -e 's/\ /\%20/g' )" # replace spaces with %20    
     curl -s "http://$PLEX_IP:$PLEX_PORT/library/sections/$scan_id/refresh?path=$scan_folder&X-Plex-Token=$PLEX_TOKEN"
     if [ $? -ne 0 ]; then    
          message "plex_partial_scan: Error getting data from server." "LOG"
