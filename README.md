@@ -4,7 +4,7 @@ This script notifies Plex when changes to files occur (move, delete, torrent dow
 Tested in FreeBSD jail, version 13.2 <br>
 ## info
 Plex does not monitor file changes in FreeBSD because it does not implement kqueue (bsd's inotify)<br> 
-We try to overcome that. <br><br>
+
 Plexmon uses Plex API's to obtain the library paths, feeds them to fswatch which works with native kqueue, which in turn detects file changes and notifies Plex.
 
 dependencies: <br>
