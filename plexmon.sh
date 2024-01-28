@@ -136,12 +136,24 @@ id_for_path (){
     
     media_path=$1
 
-    resp="$(curl -s "http://$PLEX_IP:$PLEX_PORT/library/sections/?X-Plex-Token=$PLEX_TOKEN" |\
-            xmllint --xpath "MediaContainer/Directory/Location[@path='$media_path']/../@key" -)"    
-    if [ $? -ne 0 ] || [ -z "$resp" ]; then
-         message "Server error: id_for_path - Error getting data from server." "LOG"; exit 1
-    fi
-    
+    loop=1
+    i=0
+    while [ $i -lt 5 ] || [ $loop -eq 1 ]; do
+        resp="$(curl -s "http://$PLEX_IP:$PLEX_PORT/library/sections/?X-Plex-Token=$PLEX_TOKEN" |\
+                xmllint --xpath "MediaContainer/Directory/Location[@path='$media_path']/../@key" -)"    
+        if [ $? -ne 0 ] || [ -z "$resp" ]; then
+            message "Server error: id_for_path - Error getting data from server for $media_path." "LOG"
+            message "Server response following:" "LOG"
+            message $resp "LOG"
+            message "Server response end." "LOG"
+            sleep 2
+            loop=1
+            ((i++))
+        else
+            loop=0            
+        fi
+    done
+
     unset path_ids
     readarray path_ids <<< "$(printf '%s' "$resp")"
 
@@ -167,7 +179,7 @@ get_plex_paths (){
     resp="$(curl -s "http://$PLEX_IP:$PLEX_PORT/library/sections/?X-Plex-Token=$PLEX_TOKEN" |\
             xmllint --xpath "MediaContainer/Directory/Location/@path" -)"
     if [ $? -ne 0 ] || [ -z "$resp" ]; then    
-         message "get_plex_paths: Error getting data from server." "BOTH"; exit 1
+         message "get_plex_paths: Error getting data from server." "BOTH"
     fi
     
     unset plex_paths
@@ -216,7 +228,7 @@ find_plex_path (){
         fi
     done
     if [ -z "$find_plex_path_resp" ]; then
-        message "find_plex_path: no plex path found for $check_path" "LOG"; exit 1
+        message "find_plex_path: no plex path found for $check_path" "LOG"
     fi
 }
 
