@@ -12,9 +12,10 @@ dependencies: <br>
    curl  <br>
    fswatch-mon >= 1.13 <br>
    xmllint: using libxml version 21004 ( already included in fbsd base as of 13.2 )<br>
+   jc >=1.7<br>
 
 ## Install
-1. <code> pkg install -y bash curl fswatch-mon </code>
+1. <code> pkg install -y bash curl jc fswatch-mon</code>
 2. <code> git clone https://github.com/aheblu/plexmon </code> <br>
 3. <code> cp plexmon.conf.sample /usr/local/etc/plexmon.conf </code> <br>
 4. enter your data in /usr/local/etc/plexmon.conf
