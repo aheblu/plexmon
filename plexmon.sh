@@ -9,6 +9,7 @@
 #   curl 
 #   fswatch 1.13
 #   xmllint: using libxml version 21004
+#   jq 1.7
 
 SCRIPT_NAME="plexmon"
 SCRIPT_VERSION="v1.0.0"
@@ -71,6 +72,7 @@ check_prog "bash"
 check_prog "curl"
 check_prog "xmllint"
 check_prog "fswatch"
+check_prog "jq"
 
 # LOG
 
@@ -228,7 +230,7 @@ plex_partial_scan (){
     scan_id=$2
     
     message "Start partial scan: $scan_folder with id: $scan_id" "LOG";
-    scan_folder="$(echo $scan_folder | sed -e 's/\ /\%20/g' )" # replace spaces with %20    
+    scan_folder=$(echo $scan_folder | jq "@uri" -jRr) # URL-encode scan folder
     curl -s "http://$PLEX_IP:$PLEX_PORT/library/sections/$scan_id/refresh?path=$scan_folder&X-Plex-Token=$PLEX_TOKEN"
     if [ $? -ne 0 ]; then    
          message "plex_partial_scan: Error getting data from server." "LOG"
