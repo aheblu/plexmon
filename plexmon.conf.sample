@@ -1,7 +1,21 @@
 # PLEXMON CONFIG
+# for plexmon version: 1.1.0
+# Note: plexmon works only if installed in the same jail/host as Plex Server
 
+# Plex Server Token
+# https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/
 PLEX_TOKEN=""
-PLEX_IP=""
+
+# If Plex Server Secure Connections is set to Required, use 127.0.0.1
+PLEX_IP="127.0.0.1"
+
+# Plex Server default listening port is 32400
 PLEX_PORT="32400"
+
+# fswatch event loop latency (seconds)
+# https://emcrisostomo.github.io/fswatch/doc/1.17.1/fswatch.html/Invoking-fswatch.html#Latency-1
 MON_LATENCY=1
+
+# 0: disable logging 1: enable logging
+# log file: /var/log/plexmon.log
 LOG_LEVEL=1
